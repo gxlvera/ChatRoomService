@@ -1,0 +1,25 @@
+#msg-container{
+    position:relative;
+}
+
+.msg-right{
+    text-align:end;
+
+}
+
+.msg-left{
+    text-align:start;
+    
+}
+
+.msg-right span{
+    background-color: grey;
+    display:inline-block;
+    padding:5px;
+}
+
+.msg-left span{
+    background-color:aquamarine;
+    display:inline-block;
+    padding:5px;
+}
