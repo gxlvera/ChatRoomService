@@ -19,14 +19,12 @@ label{
     display:inline-block;
     width:120px;
 }
+
+button{
+    margin-top:20px;
+}
   
 #alertMsgLogin, #alertMsgRegister{
-    visibility:hidden;
-    background : yellow;
-    color:red;
-}
-
-.alertAfterSubmit {
     background : yellow;
     color:red;
 }

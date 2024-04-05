@@ -13,7 +13,6 @@
 
     #login/register
     if(isset($_POST["email"])&&isset($_POST["password"])&&isset($_POST["type"])){
-        $loginStatus = "";
         $email = $_POST["email"];
         $password = $_POST["password"];
         $type = $_POST["type"];
@@ -47,7 +46,7 @@
             or die("<p>Query Error!<br>".mysqli_error($db_conn)."</p>");
             #check duplicate
             if (mysqli_num_rows($result) > 0){
-                echo "Failed to register! Already registered before!";
+                $_SESSION['status'] = "Failed to register! Already registered before!";
             } else {
                 $query = "INSERT INTO userRecord (email, password) VALUES ('$email', '$password')";
                 $result = mysqli_query($db_conn, $query)
@@ -61,7 +60,7 @@
                     header("Location: chat.php");
                     echo "Register successful!";
                 } else {
-                    echo "Failed to register!";
+                    $_SESSION['status'] = "Failed to register!";
                 }
                 mysqli_free_result($result);
             }
@@ -99,17 +98,17 @@
                             <span>Click&nbsp<a  id="toRegister">here</a>&nbspto register an account.</span>
                         </fieldset>
                     </form>
-                <span id= "alertMsgLogin"></span>
-                <span class="alertAfterSubmit">
+                <span id= "alertMsgLogin">
                     <?php if (isset($_SESSION['status'])){
                         echo $_SESSION['status'];
                     }?>
                 </span>
+               
                 </div>
                 
                 <div id="register">
-                <form id = "registerForm">
-                    <h3>Login to Chatroom</h3>
+                <form id = "registerForm" action='login.php' method='post'>
+                    <h3>Register to Chatroom</h3>
                     <fieldset>
                         <legend>Register</legend>
                         <input type="hidden" name="type" value="register">
@@ -127,12 +126,7 @@
                         <span>Click&nbsp<a  id="toLogin">here</a>&nbspto log in.</span>
                     </fieldset>
                 </form>
-                <p id= "alertMsgRegister"></p>
-                <span class="alertAfterSubmit">
-                    <?php if (isset($_SESSION['status'])){
-                        echo $_SESSION['status'];
-                    }?>
-                </span>
+                <span id= "alertMsgRegister"></span>
                 </div>
                 
             </div>

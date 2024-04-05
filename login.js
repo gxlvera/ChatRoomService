@@ -19,10 +19,6 @@ const formHeight = loginForm.offsetHeight;
 const innerBox = document.getElementById('inner-box');
 innerBox.style.transform=`translate(${-formWidhth/2}px,${-formHeight/2}px)`;
 
-const alerts = document.getElementsByClassName("alertAfterSubmit");
-const alertAfterLogin = alerts[0];
-const alertAfterRegister = alerts[1];
-
 function showMsg(){
     msg.style.visibility='visible';
 }
@@ -30,13 +26,12 @@ function showMsg(){
 async function checkAndSubmitLogin(e){
     e.preventDefault();
     msg.style.visibility='hidden';
-    alertAfterLogin.style.display = 'none';
+
     if (!emailLogin.value.match(emailFormat)){
         showMsg();
         msg.innerHTML = "Please enter a valid HKU @connect.hku.hk email";
         return
     }
-
     if(emailLogin.value == "" && pwLogin.value==""){
         showMsg();
         msg.innerHTML = "Missing email address and password!";
@@ -72,18 +67,13 @@ async function checkAndSubmitLogin(e){
     //     emailLogin.value = "";
     //     pwLogin.value = "";
     // } 
-    msg.style.display = 'none';
-    alertAfterLogin.style.display = 'inline';
-    console.log("show alert")
     loginForm.submit();
 }
 
 function checkAndfetchEmail() {
-
     //reset the msg
-    msg.style.display='inline';
+    
     msg.style.visibility = 'hidden';
-    alertAfterLogin.style.display = 'none';
     
     if (!emailLogin.value.match(emailFormat)){
         showMsg();
@@ -108,12 +98,12 @@ function checkAndfetchEmail() {
         console.log(err);
         });
 }
+
 const toRegister = document.getElementById("toRegister");
-
-const registerForm = document.getElementById("registerForm");
-
 const loginSection = document.getElementById("login");
 const registerSection = document.getElementById("register");
+
+const registerForm = document.getElementById("registerForm");
 
 toRegister.addEventListener("click", () => {
     loginSection.style.display = 'none';
@@ -171,6 +161,7 @@ function checkEmailRegister(){
 }
 
 function checkAndSubmitRegister(e){
+    msgR.style.visibility = 'hidden';
     e.preventDefault();
     if(emailRegister.value == "" && pwRegister.value==""){
         msgR.style.visibility="visible";
@@ -198,6 +189,8 @@ function checkAndSubmitRegister(e){
         return
     }
     if (!emailRegister.value.match(emailFormat)){
+        msgR.style.visibility = 'visible';
+        msgR.innerHTML = "Please enter a valid HKU @connect.hku.hk email";
         return
     }
     registerForm.submit();
