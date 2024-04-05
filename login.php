@@ -1,16 +1,19 @@
 <?php
     session_start();
     session_unset();
+
     if (isset($_SESSION['email'])){
         header("Location: chat.php");
+        
     }
-    $a = "hi";
+
     #connect to database
     $db_conn = mysqli_connect("mydb", "dummy", "c3322b", "db3322")
     or die("Connection Error!".mysqli_connect_error());
 
     #login/register
     if(isset($_POST["email"])&&isset($_POST["password"])&&isset($_POST["type"])){
+        $loginStatus = "";
         $email = $_POST["email"];
         $password = $_POST["password"];
         $type = $_POST["type"];
@@ -26,13 +29,15 @@
                 if ($row["password"] == $password){
                     $_SESSION['email'] = $email; //Store authenticated variable
                     session_write_close(); //free session lock
-                    header("Location: chat.php");
-                    echo "Login successful!";
+                    echo "success";
+                    exit();
                 } else {
                     echo "Login failed. Wrong password!";
+                    exit();
                 }
             } else {
-                echo "Faild to log in. User not found!";
+                echo "Failed to log in. User not found!";
+                exit();
             }
             mysqli_free_result($result);
         } else {
@@ -50,7 +55,6 @@
                 $result = mysqli_query($db_conn, $query)
                 or die("<p>Query Error!<br>".mysqli_error($db_conn)."</p>");
                 if (mysqli_num_rows($result) > 0){
-                    
                     $_SESSION['email'] = $email; //Store authenticated variable
                     session_write_close(); //free session lock
                     header("Location: chat.php");
@@ -68,7 +72,6 @@
         session_unset();
         session_destroy();
         header("Location: login.php");
-    
     }
 ?>
 
@@ -78,7 +81,6 @@
     <body>
     <h1>A Simple Chatroom Service</h1>
             <div id = "inner-box">
-                
                     <form id = "loginForm" action="login.php" method="post">
                         <h3>Login to Chatroom</h3>
                         <fieldset>
@@ -96,24 +98,28 @@
                         </fieldset>
                     </form>
                 <span id= "alertMsgLogin"></span>
-                <span id = "alertAfterLogin"><span>
                 
-                <form id = "registerForm" action="login.php" method="post">
-                    <input type="hidden" name="type" value="register">
-                    <label for="emailRegister">Email:</label>
-                    <input name = "email" id = "emailRegister" type = "text" required>
-                    <br>
-                    <label for ="passwordRegister">Password:</label>
-                    <input name = "password" id = "passwordRegister" type = "password" required>
-                    <br>
-                    <label for ="repeatPassword">Repeat Password:</label>
-                    <input name = "repeatPassword" id = "repeatPassword" type = "password" required>
-                    <br>
-                    <button type = "submit" id="submitRegister">submit</button>
-                    <br>
-                    <span>Click&nbsp<a  id="toLogin">here</a>&nbspto log in.</span>
-                    <p id= "alertMsgRegister"></p>
+                
+                <form id = "registerForm">
+                    <h3>Login to Chatroom</h3>
+                    <fieldset>
+                        <legend>Register</legend>
+                        <input type="hidden" name="type" value="register">
+                        <label for="emailRegister">Email:</label>
+                        <input name = "email" id = "emailRegister" type = "text" required>
+                        <br>
+                        <label for ="passwordRegister">Password:</label>
+                        <input name = "password" id = "passwordRegister" type = "password" required>
+                        <br>
+                        <label for ="repeatPassword">Repeat Password:</label>
+                        <input name = "repeatPassword" id = "repeatPassword" type = "password" required>
+                        <br>
+                        <button type = "submit" id="submitRegister">Register</button>
+                        <br>
+                        <span>Click&nbsp<a  id="toLogin">here</a>&nbspto log in.</span>
+                    </fieldset>
                 </form>
+                <p id= "alertMsgRegister"></p>
             </div>
             
             

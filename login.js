@@ -19,13 +19,15 @@ const formHeight = loginForm.offsetHeight;
 const innerBox = document.getElementById('inner-box');
 innerBox.style.transform=`translate(${-formWidhth/2}px,${-formHeight/2}px)`;
 
+const alert = document.getElementById("alertAfterLogin");
+
 function showMsg(){
     msg.style.visibility='visible';
 }
 
-function checkAndSubmitLogin(e){
+async function checkAndSubmitLogin(e){
     e.preventDefault();
-
+    msg.style.visibility='hidden';
     if (!emailLogin.value.match(emailFormat)){
         showMsg();
         msg.innerHTML = "Please enter a valid HKU @connect.hku.hk email";
@@ -47,11 +49,30 @@ function checkAndSubmitLogin(e){
         msg.innerHTML = "Please provide the password!";
         return
     }
-   
-    loginForm.submit();
+    var formDataLogin = new FormData();
+    formDataLogin.append("email",emailLogin.value)
+    formDataLogin.append("password",pwLogin.value)
+    formDataLogin.append("type","login");
+    const response = await fetch('login.php', {
+        method: 'POST',
+        body:formDataLogin
+    })
+    if (response.status === 200) {
+        const responseMsg = await response.text();
+        console.log(responseMsg);
+        if (responseMsg == "success"){
+            window.location.href = "chat.php";
+            return;
+        }
+        showMsg();
+        msg.innerHTML = responseMsg;
+        emailLogin.value = "";
+        pwLogin.value = "";
+    } 
 }
 
-function checkAndfetchEmail(){
+function checkAndfetchEmail() {
+
     //reset the msg
     msg.style.visibility = 'hidden';
     
