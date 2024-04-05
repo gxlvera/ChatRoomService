@@ -19,7 +19,9 @@ const formHeight = loginForm.offsetHeight;
 const innerBox = document.getElementById('inner-box');
 innerBox.style.transform=`translate(${-formWidhth/2}px,${-formHeight/2}px)`;
 
-const alert = document.getElementById("alertAfterLogin");
+const alerts = document.getElementsByClassName("alertAfterSubmit");
+const alertAfterLogin = alerts[0];
+const alertAfterRegister = alerts[1];
 
 function showMsg(){
     msg.style.visibility='visible';
@@ -28,6 +30,7 @@ function showMsg(){
 async function checkAndSubmitLogin(e){
     e.preventDefault();
     msg.style.visibility='hidden';
+    alertAfterLogin.style.display = 'none';
     if (!emailLogin.value.match(emailFormat)){
         showMsg();
         msg.innerHTML = "Please enter a valid HKU @connect.hku.hk email";
@@ -49,32 +52,38 @@ async function checkAndSubmitLogin(e){
         msg.innerHTML = "Please provide the password!";
         return
     }
-    var formDataLogin = new FormData();
-    formDataLogin.append("email",emailLogin.value)
-    formDataLogin.append("password",pwLogin.value)
-    formDataLogin.append("type","login");
-    const response = await fetch('login.php', {
-        method: 'POST',
-        body:formDataLogin
-    })
-    if (response.status === 200) {
-        const responseMsg = await response.text();
-        console.log(responseMsg);
-        if (responseMsg == "success"){
-            window.location.href = "chat.php";
-            return;
-        }
-        showMsg();
-        msg.innerHTML = responseMsg;
-        emailLogin.value = "";
-        pwLogin.value = "";
-    } 
+    // var formDataLogin = new FormData();
+    // formDataLogin.append("email",emailLogin.value)
+    // formDataLogin.append("password",pwLogin.value)
+    // formDataLogin.append("type","login");
+    // const response = await fetch('login.php', {
+    //     method: 'POST',
+    //     body:formDataLogin
+    // })
+    // if (response.status === 200) {
+    //     const responseMsg = await response.text();
+    //     console.log(responseMsg);
+    //     if (responseMsg == "success"){
+    //         window.location.href = "chat.php";
+    //         return;
+    //     }
+    //     showMsg();
+    //     msg.innerHTML = responseMsg;
+    //     emailLogin.value = "";
+    //     pwLogin.value = "";
+    // } 
+    msg.style.display = 'none';
+    alertAfterLogin.style.display = 'inline';
+    console.log("show alert")
+    loginForm.submit();
 }
 
 function checkAndfetchEmail() {
 
     //reset the msg
+    msg.style.display='inline';
     msg.style.visibility = 'hidden';
+    alertAfterLogin.style.display = 'none';
     
     if (!emailLogin.value.match(emailFormat)){
         showMsg();
@@ -102,16 +111,21 @@ function checkAndfetchEmail() {
 const toRegister = document.getElementById("toRegister");
 
 const registerForm = document.getElementById("registerForm");
+
+const loginSection = document.getElementById("login");
+const registerSection = document.getElementById("register");
+
 toRegister.addEventListener("click", () => {
-    loginForm.style.display = 'none';
-    registerForm.style.display = 'block';
+    loginSection.style.display = 'none';
+    registerSection.style.display = 'block';
 })
 
 //register
 const toLogin = document.getElementById("toLogin");
+
 toLogin.addEventListener("click", () => {
-    registerForm.style.display = 'none';
-    loginForm.style.display = 'block';
+    loginSection.style.display = 'block';
+    registerSection.style.display = 'none';
 })
 
 const submitRegister = document.getElementById('submitRegister');

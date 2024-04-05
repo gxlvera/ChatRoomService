@@ -1,11 +1,11 @@
 <?php
     session_start();
-    session_unset();
+    // session_unset();
 
     if (isset($_SESSION['email'])){
         header("Location: chat.php");
-        
     }
+    
 
     #connect to database
     $db_conn = mysqli_connect("mydb", "dummy", "c3322b", "db3322")
@@ -28,16 +28,17 @@
                 $row=mysqli_fetch_array($result);
                 if ($row["password"] == $password){
                     $_SESSION['email'] = $email; //Store authenticated variable
+                    $_SESSION['status'] = "success";
                     session_write_close(); //free session lock
-                    echo "success";
-                    exit();
+                    header("Location: chat.php");
+                    
                 } else {
-                    echo "Login failed. Wrong password!";
-                    exit();
+                    // echo "Login failed. Wrong password!";
+                    $_SESSION['status'] = "Login failed. Wrong password!";
                 }
             } else {
-                echo "Failed to log in. User not found!";
-                exit();
+                // echo "Failed to log in. User not found!";
+                $_SESSION['status'] = "Failed to log in. User not found!";
             }
             mysqli_free_result($result);
         } else {
@@ -81,6 +82,7 @@
     <body>
     <h1>A Simple Chatroom Service</h1>
             <div id = "inner-box">
+                <div id = "login">
                     <form id = "loginForm" action="login.php" method="post">
                         <h3>Login to Chatroom</h3>
                         <fieldset>
@@ -98,8 +100,14 @@
                         </fieldset>
                     </form>
                 <span id= "alertMsgLogin"></span>
+                <span class="alertAfterSubmit">
+                    <?php if (isset($_SESSION['status'])){
+                        echo $_SESSION['status'];
+                    }?>
+                </span>
+                </div>
                 
-                
+                <div id="register">
                 <form id = "registerForm">
                     <h3>Login to Chatroom</h3>
                     <fieldset>
@@ -120,6 +128,13 @@
                     </fieldset>
                 </form>
                 <p id= "alertMsgRegister"></p>
+                <span class="alertAfterSubmit">
+                    <?php if (isset($_SESSION['status'])){
+                        echo $_SESSION['status'];
+                    }?>
+                </span>
+                </div>
+                
             </div>
             
             

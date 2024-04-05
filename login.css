@@ -26,8 +26,12 @@ label{
     color:red;
 }
 
+.alertAfterSubmit {
+    background : yellow;
+    color:red;
+}
 
-#registerForm {
+#register {
     display:none;
 }
 
