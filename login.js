@@ -27,21 +27,25 @@ async function checkAndSubmitLogin(e){
     e.preventDefault();
     msg.style.visibility='hidden';
 
-    if (!emailLogin.value.match(emailFormat)){
-        showMsg();
-        msg.innerHTML = "Please enter a valid HKU @connect.hku.hk email";
-        return
-    }
     if(emailLogin.value == "" && pwLogin.value==""){
         showMsg();
         msg.innerHTML = "Missing email address and password!";
         return
     } 
+    
     if (emailLogin.value == ""){
         showMsg();
         msg.innerHTML = "Missing email address!";
         return 
     } 
+
+    if (!emailLogin.value.match(emailFormat)){
+        showMsg();
+        msg.innerHTML = "Please enter a valid HKU @connect.hku.hk email";
+        return
+    }
+
+
     if (pwLogin.value==""){
         showMsg();
         msg.innerHTML = "Please provide the password!";
@@ -163,6 +167,7 @@ function checkEmailRegister(){
 function checkAndSubmitRegister(e){
     msgR.style.visibility = 'hidden';
     e.preventDefault();
+   
     if(emailRegister.value == "" && pwRegister.value==""){
         msgR.style.visibility="visible";
         msgR.innerHTML = "Missing email address and password!";
@@ -173,6 +178,11 @@ function checkAndSubmitRegister(e){
         msgR.innerHTML = "Missing email address!";
         return 
     } 
+    if (!emailRegister.value.match(emailFormat)){
+        msgR.style.visibility = 'visible';
+        msgR.innerHTML = "Please enter a valid HKU @connect.hku.hk email";
+        return
+    }
     if (pwRegister.value==""){
         msgR.style.visibility="visible";
         msgR.innerHTML = "Please provide the password!";
@@ -188,11 +198,7 @@ function checkAndSubmitRegister(e){
         msgR.innerHTML = "Missmatch passwords!";
         return
     }
-    if (!emailRegister.value.match(emailFormat)){
-        msgR.style.visibility = 'visible';
-        msgR.innerHTML = "Please enter a valid HKU @connect.hku.hk email";
-        return
-    }
+
     registerForm.submit();
 }
 

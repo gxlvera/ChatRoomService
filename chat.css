@@ -1,25 +1,114 @@
+
+#button-container{
+    text-align:end;
+}
+
+#out-container{
+    position:absolute;
+    width:40%;
+    height:80%;
+    border:1px solid black;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    background-color: 7ACAF7;
+    border-radius: 10px;
+    padding:10px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+#logout{
+    cursor:pointer;
+    align-self: flex-end;
+}
+
 #msg-container{
-    position:relative;
+    width:100%;
+    height:95%;
+    overflow-y:scroll;
+    padding:5px;
+    background-color: white;
+    border:1px solid red;
+    border-radius: 10px;
+    margin:5px;
+    box-sizing: border-box;
+}
+
+.msg-body{
+    display:inline-block;
+    max-width:55%;
+    padding:5px;
+    overflow-wrap: break-word;
+    text-align:start;
+}
+
+.msg-body >:first-child{
+    font-weight: bold;
+    margin-right:30px;
+}
+
+.msg-body p,span{
+    margin:2px;
+    text-align:justify;
+    font-size:small;
+}
+
+.msg-left, .msg-right{
+    margin:10px;
 }
 
 .msg-right{
     text-align:end;
+    margin-right:5px;
 
 }
 
 .msg-left{
     text-align:start;
+    margin-left:5px;
+}
+
+.msg-right div{
+    background-color: D1D7D3;
+    border-radius:5px 5px 0 5px;
+
+}
+
+.msg-left div{
+    background-color:BFE4CF;
+    border-radius:5px 5px 5px 0;
+
+}
+
+#form-container{
+    padding:5px;
+    background-color: B3E2B0;
+    width:100%;
+    border:1px solid green;
+    border-radius: 10px;
+    margin:5px;
+    height:10%;
+    box-sizing: border-box;
     
 }
-
-.msg-right span{
-    background-color: grey;
-    display:inline-block;
-    padding:5px;
+    
+form{
+    display:flex;
+    direction: row;
+    width:100%;
+    height:100%;
+    justify-content: space-between;
+    margin:0;
 }
 
-.msg-left span{
-    background-color:aquamarine;
-    display:inline-block;
-    padding:5px;
+textarea{
+    width:86%;
+    height:100%;
+}
+
+#send-msg{
+    margin-right:0;
 }

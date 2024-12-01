@@ -2,12 +2,25 @@
 
 var user ="";
 
+fetchMsg();
+
+const intervalId = setInterval(fetchMsg, 5000);
+
 async function fetchMsg(){
-    var time=Math.floor(Date.now());
+    
+    var time=Date.now();
+    console.log("currenttime",time);
+ 
     var response = await fetch("chatmsg.php"+"?time="+time);
+    console.log(response.status);
+    if (!response.ok){
+        console.log("session expire");
+        window.location.href="login.php";
+        return;
+    }
     response = await response.json()
     console.log(response);
-    if (response.length==1){
+    if (response.length!=4){
         //no recent msg
         return 
     }
@@ -16,9 +29,14 @@ async function fetchMsg(){
     const msgContainer = document.getElementById("msg-container");
     msgContainer.innerHTML = "";
     for (var i = 0;i<data.length;i++){
-        const msg = document.createElement("span");
-        msg.innerHTML = `<p>`+data[i].person+`</p>`
-        +`<p id="time">`+data[i].time+`</p>`
+        const msgTime = getTime(parseInt(data[i].time));  
+        const name = data[i].person.split('@')[0]; 
+   
+        const msg = document.createElement("div");
+        msg.setAttribute("class", "msg-body");
+   
+        msg.innerHTML = `<span>`+name+`</span>`
+        +`<span>`+msgTime+`</span>`
         +`<p>`+data[i].message+`</p>`;
 
         const msgBox = document.createElement("div");
@@ -31,7 +49,28 @@ async function fetchMsg(){
         msgBox.appendChild(msg);
         msgContainer.appendChild(msgBox);
     }
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+    console.log("current",response[2]);
+    console.log("last",response[3]);
+    
 }
+
+function getTime(time){
+    const date = new Date(time)
+    let hour = check(date.getHours());
+    let minute = check(date.getMinutes());
+    let second = check(date.getSeconds());
+
+    function check(i){
+        if (i<10){
+            return "0"+i;
+        } else{
+            return i;
+        }
+    }
+    return `${hour}:${minute}:${second}`;
+}
+
 const button = document.getElementById("send-msg");
 button.addEventListener("click",sendMsg);
 
@@ -39,35 +78,31 @@ const msg = document.getElementById("message");
 
 async function sendMsg(e){
    e.preventDefault();
-    if (msg.value ==""){
+   const msgValue = msg.value.replace(/\\n/g, '\n');
+  
+    if (msgValue.trim() ==""){
+        msg.value="";
         return
     } 
     var time=Date.now();
     var formData = new FormData();
-    formData.append("message",msg.value);  
+    formData.append("message",msgValue);  
     formData.append("time",time) 
-
+    
     let response = await fetch("chatmsg.php", {
         method: "POST",
         body:formData
     })
- 
     response = await response.text();
-    
-
     console.log(response)
-
+    msg.value="";
     fetchMsg();
-    
-
 }
 
 const logoutButton = document.getElementById("logout");
 logoutButton.addEventListener("click",logout);
 
-fetchMsg();
 
-const intervalId = setInterval(fetchMsg, 5000);
 
 async function logout(){
     var time = Date.now();
@@ -88,7 +123,7 @@ var timePass = 0;
 function checkTime(){
     var lastMsgBox = document.querySelector('#msg-container div:last-child');
     if (lastMsgBox == null){
-        return 30000;
+        return 120000;
     }
     const lastTime = lastMsgBox.id;
     console.log("lastTime: ",lastTime);
@@ -103,14 +138,14 @@ function updateTime(isInitialCall=false){
         timePass = checkTime();
         console.log("timePass",timePass);
     }
-    if (timePass<30000){
-        setTimeout(updateTime, 30000-timePass)
+    if (timePass<120000){
+        setTimeout(updateTime, 120000-timePass)
     } else {
         logout();
     }
 }
 
-updateTime(isInitialCall = true);
+// updateTime(isInitialCall = true);
 
 
 

@@ -29,6 +29,23 @@
             $data = mysqli_fetch_all($result,MYSQLI_ASSOC);
             array_push($response,$data);
         } 
+        // $lastMsg = $data[count($data)-1];
+        // $time = $lastMsg['time'];
+        // if ($time<=$currentTime-120000){
+        //     http_response_code(401);
+        //     session_unset();
+        //     session_destroy();
+        // }
+        
+        $lastTime = $_SESSION['time'];
+
+        if ($lastTime<=$currentTime-120000){
+            http_response_code(401);
+            session_unset();
+            session_destroy();
+        }
+        array_push($response,$currentTime);
+        array_push($response,$lastTime);
         echo json_encode($response);
     }
 
@@ -42,10 +59,10 @@
         or die("<p>Query Error!<br>".mysqli_error($db_conn)."</p>");
         // if (!$result){
         //     http_response_code(500);
-        //     echo "Query Error: INSERT!";
+        //     echo "Query Error: INSERT!"; 
         //     die("<p>Query Error!<br>".mysqli_error($db_conn)."</p>");
         // }
-
+        $_SESSION['time'] = $time;
     }
 
 ?>

@@ -8,7 +8,7 @@
     
 
     #connect to database
-    $db_conn = mysqli_connect("mydb", "dummy", "c3322b", "db3322")
+    $db_conn = mysqli_connect("Host_name", "Username", "Password", "DB_name")
     or die("Connection Error!".mysqli_connect_error());
 
     #login/register
@@ -18,7 +18,7 @@
         $type = $_POST["type"];
         
         if ($type=="login"){
-            $query = "SELECT * FROM userRecord WHERE email = '$email'";
+            $query = "SELECT * FROM account WHERE email = '$email'";
             $result = mysqli_query($db_conn, $query) 
             or die("<p>Query Error!<br>".mysqli_error($db_conn)."</p>");
     
@@ -41,17 +41,17 @@
             }
             mysqli_free_result($result);
         } else {
-            $query = "SELECT * FROM userRecord WHERE email = '$email'";
+            $query = "SELECT * FROM account WHERE email = '$email'";
             $result = mysqli_query($db_conn, $query)
             or die("<p>Query Error!<br>".mysqli_error($db_conn)."</p>");
             #check duplicate
             if (mysqli_num_rows($result) > 0){
                 $_SESSION['status'] = "Failed to register! Already registered before!";
             } else {
-                $query = "INSERT INTO userRecord (email, password) VALUES ('$email', '$password')";
+                $query = "INSERT INTO account (email, password) VALUES ('$email', '$password')";
                 $result = mysqli_query($db_conn, $query)
                 or die("<p>Query Error!<br>".mysqli_error($db_conn)."</p>");
-                $query = "SELECT * FROM userRecord WHERE email = '$email'";
+                $query = "SELECT * FROM account WHERE email = '$email'";
                 $result = mysqli_query($db_conn, $query)
                 or die("<p>Query Error!<br>".mysqli_error($db_conn)."</p>");
                 if (mysqli_num_rows($result) > 0){
@@ -79,7 +79,7 @@
 <html> 
     <link rel="stylesheet" href="login.css" type="text/css">
     <body>
-    <h1>A Simple Chatroom Service</h1>
+    <h2>A Simple Chatroom Service</h2>
             <div id = "inner-box">
                 <div id = "login">
                     <form id = "loginForm" action="login.php" method="post">

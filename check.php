@@ -5,7 +5,7 @@
     #precheck if user exist
     if(isset($_GET["email"])){
         $email = $_GET["email"];
-        $query = "SELECT * FROM userRecord WHERE email = '$email'";
+        $query = "SELECT * FROM account WHERE email = '$email'";
         $result = mysqli_query($db_conn, $query) 
         or die("Connection Error!".mysqli_connect_error());
         if(mysqli_num_rows($result) > 0){
