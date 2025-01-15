@@ -8,6 +8,8 @@ This Web Chat application allows users to exchange real-time messages within a c
 - Session control with auto-logout on inactivity.
 - Secure login and registration with session management.
 
+<img src='UI.jpg' alt='UI screenshot' width='200' height='300' style='display:inline-block' />
+
 ## Installation
 
 ### Prerequisites
